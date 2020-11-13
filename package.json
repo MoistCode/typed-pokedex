@@ -6,6 +6,6 @@
   "author": "Tommy Long Pham <tpham@smugmug.com>",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^4.0.5"
+    "nodemon": "^2.0.6"
   }
 }
