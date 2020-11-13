@@ -3,7 +3,7 @@ const container: HTMLElement | null = document.getElementById("app");
 if (!container) throw Error("Container not found.");
 
 // Constants ===================================================================
-const NUM_OF_POKEMONS: number = 100;
+const NUM_OF_POKEMONS: number = 150;
 const POKEMON_API: string = 'https://pokeapi.co/api/v2/pokemon/';
 // END Constants ===============================================================
 
@@ -40,20 +40,20 @@ interface ITransformedPokemon {
 }
 // END Interfaces ==============================================================
 
-const showPokemon = (transformedPokemon: ITransformedPokemon): void => {
-  let pokemonHTMLCard: string = `
-    <div class="card">
-      <span class="card--id">#${transformedPokemon.id}</span>
-      <img class="card--image" src=${transformedPokemon.image} alt=${transformedPokemon.name} />
-      <h1 class="card--name">${transformedPokemon.name}</h1>
-      <span class="card--details">${transformedPokemon.type}</span>
-    </div>
-  `;
-
-  container.innerHTML += pokemonHTMLCard;
+const showPokemon = (fetchedPokemons: ITransformedPokemon[]): void => {
+  for (let pokemon of fetchedPokemons) {
+    container.innerHTML += `
+      <div class="card">
+        <span span class="card--id">#${pokemon.id}</span>
+        <img class="card--image" src=${pokemon.image} alt=${pokemon.name} />
+        <h1 class="card--name">${pokemon.name}</h1>
+        <span class="card--details">${pokemon.type}</span>
+      </div> 
+    `;
+  }
 };
 
-const getPokemon = async (id: number): Promise<void> => {
+const getPokemon = async (id: number): Promise<ITransformedPokemon> => {
   const response: Response = await fetch(`${POKEMON_API}${id}`);
   const pokemon: IPokemonResponse = await response.json();
   const pokemonType: string = pokemon.types
@@ -67,13 +67,32 @@ const getPokemon = async (id: number): Promise<void> => {
     type: pokemonType,
   }
 
-  showPokemon(transformedPokemon);
+  return transformedPokemon;
 };
 
-const fetchPokemonData = (): void => {
-  for (let pokemonNum = 1; pokemonNum < NUM_OF_POKEMONS; pokemonNum++) {
-    getPokemon(pokemonNum);
+
+const fetchPokemonData = async (): Promise<ITransformedPokemon[]> => {
+  const allFetchedPokemon: Promise<ITransformedPokemon>[] = [];
+
+  for (let pokemonNum = 1; pokemonNum <= NUM_OF_POKEMONS; pokemonNum++) {
+    allFetchedPokemon.push(getPokemon(pokemonNum));
   }
+
+  const results = await Promise.all(allFetchedPokemon);
+
+  return results;
 };
 
-fetchPokemonData();
+const start = async (): Promise<void> => {
+  const listOfTransformedPokemonData = await fetchPokemonData();
+  const sortedData = listOfTransformedPokemonData.sort((pokemon1, pokemon2) => {
+    return pokemon1.id > pokemon2.id ? 1 : -1;
+  });
+
+  showPokemon(sortedData);
+};
+
+start();
+
+
+
