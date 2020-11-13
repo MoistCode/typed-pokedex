@@ -1,0 +1,11 @@
+{
+  "name": "typed-pokedex",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:MoistCode/typed-pokedex.git",
+  "author": "Tommy Long Pham <tpham@smugmug.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.0.5"
+  }
+}
