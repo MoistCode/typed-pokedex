@@ -39,7 +39,7 @@ var container = document.getElementById("app");
 if (!container)
     throw Error("Container not found.");
 var NUM_OF_POKEMONS = 150;
-var POKEMON_API = 'https://pokeapi.co/api/v2/pokemon/';
+var POKEMON_API = "https://pokeapi.co/api/v2/pokemon/";
 var showPokemon = function (fetchedPokemons) {
     for (var _i = 0, fetchedPokemons_1 = fetchedPokemons; _i < fetchedPokemons_1.length; _i++) {
         var pokemon = fetchedPokemons_1[_i];
@@ -58,7 +58,7 @@ var getPokemon = function (id) { return __awaiter(void 0, void 0, void 0, functi
                 pokemon = _a.sent();
                 pokemonType = pokemon.types
                     .map(function (pokeType) { return pokeType.type.name; })
-                    .join(', ');
+                    .join(", ");
                 transformedPokemon = {
                     id: pokemon.id,
                     name: pokemon.name,

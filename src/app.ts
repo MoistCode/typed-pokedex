@@ -4,7 +4,7 @@ if (!container) throw Error("Container not found.");
 
 // Constants ===================================================================
 const NUM_OF_POKEMONS: number = 150;
-const POKEMON_API: string = 'https://pokeapi.co/api/v2/pokemon/';
+const POKEMON_API: string = "https://pokeapi.co/api/v2/pokemon/";
 // END Constants ===============================================================
 
 // Interfaces ==================================================================
@@ -18,14 +18,14 @@ interface IPokemon {
 interface IPoketypeResponse {
   slot: number;
   type: {
-      name: string;
-      url: string;
+    name: string;
+    url: string;
   };
 }
 
 interface IPokemonResponse {
   id: number;
-  name: string,
+  name: string;
   types: [IPoketypeResponse];
   sprites: {
     front_default: string;
@@ -58,18 +58,17 @@ const getPokemon = async (id: number): Promise<ITransformedPokemon> => {
   const pokemon: IPokemonResponse = await response.json();
   const pokemonType: string = pokemon.types
     .map((pokeType: IPoketypeResponse) => pokeType.type.name)
-    .join(', ');
+    .join(", ");
 
   const transformedPokemon: ITransformedPokemon = {
     id: pokemon.id,
     name: pokemon.name,
     image: pokemon.sprites.front_default,
     type: pokemonType,
-  }
+  };
 
   return transformedPokemon;
 };
-
 
 const fetchPokemonData = async (): Promise<ITransformedPokemon[]> => {
   const allFetchedPokemon: Promise<ITransformedPokemon>[] = [];
@@ -93,6 +92,3 @@ const start = async (): Promise<void> => {
 };
 
 start();
-
-
-
